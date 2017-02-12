@@ -1,0 +1,30 @@
+#!/bin/csh
+# Modified for VACF with MPI
+#
+# On COE HPC cluster comile as
+# mpicc -o compute-vacf-MPI compute-vacf-MPI.c -lm
+#
+# And then submit as
+# qsub mpi_runs
+
+# Job a name
+#$ -N VACF_mpi 
+
+# Set working directory on all host to
+# directory where the job was started
+#$ -cwd
+
+# Send output to job.log (STDOUT + STDERR)
+#$ -o vacf.log
+#$ -j y
+
+# Specify the mpich parallel environment and request n
+# processors from the available hosts
+#$ -pe mpich 10
+
+#$ -q mime
+
+# Command to run.  ONLY CHANGE THE NAME OF YOUR MPI APPLICATION
+# Run as <full path to the program> <full path to the input file> <full path to the output file>  
+mpirun -nolocal -np $NSLOTS -machinefile $TMPDIR/machines /nfs/matsci-fserv/share/truszkoa/VACF-MPI/compute-vacf-MPI /nfs/matsci-fserv/share/truszkoa/VACF-MPI/sample.d /nfs/matsci-fserv/share/truszkoa/VACF-MPI/vacf_mpi.txt
+
